@@ -1,0 +1,42 @@
+<%- include('partials/header', { user, activePage: 'student' }) %>
+<div class="container">
+  <div class="flex between mb">
+    <h1>Dashboard Calon Siswa</h1>
+    <span class="muted"><%= user.email %></span>
+  </div>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <% if (!applicant) { %>
+    <div class="card">
+      <h2>Belum ada pendaftaran</h2>
+      <p class="muted mt">Silakan isi formulir pendaftaran untuk memulai proses PPDB.</p>
+      <a href="/dashboard/apply" class="btn btn-primary mt">Isi Formulir Pendaftaran</a>
+    </div>
+  <% } else { %>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Status Pendaftaran</h3>
+        <span class="badge badge-<%= applicant.status %>"><%= applicant.status %></span>
+        <dl class="mt">
+          <dt class="muted">Nomor Registrasi</dt>
+          <dd><strong><%= applicant.registration_number || '-' %></strong></dd>
+          <dt class="muted">Nama</dt>
+          <dd><%= applicant.full_name %></dd>
+        </dl>
+        <% if (applicant.status === 'pending') { %>
+          <a href="/dashboard/apply" class="btn btn-primary mt">Perbarui Data</a>
+        <% } %>
+      </div>
+
+      <div class="card">
+        <h2>Dokumen</h2>
+        <p class="muted">Unggah dokumen persyaratan Anda.</p>
+        <a href="/dashboard/documents" class="btn btn-primary mt">Kelola Dokumen</a>
+        <h2 class="mt">Pembayaran</h2>
+        <p class="muted">Unggah bukti pembayaran pendaftaran.</p>
+        <a href="/dashboard/payment" class="btn btn-success mt">Upload Bukti Pembayaran</a>
+      </div>
+    </div>
+  <% } %>
+</div>
+<%- include('partials/footer') %>

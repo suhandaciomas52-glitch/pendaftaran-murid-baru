@@ -1,0 +1,67 @@
+<%- include('partials/header', { user, activePage: 'student' }) %>
+<div class="container">
+  <h1 class="mb">Formulir Pendaftaran</h1>
+  <%- include('partials/alerts', { message, error }) %>
+  <div class="card">
+    <form method="POST" action="/dashboard/apply">
+      <div class="form-group">
+        <label>Sekolah</label>
+        <select class="form-control" name="school_id" required>
+          <option value="">-- Pilih Sekolah --</option>
+          <% schools.forEach(function(s){ %>
+            <option value="<%= s.id %>" <%= applicant && applicant.school_id == s.id ? 'selected' : '' %>><%= s.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Jurusan</label>
+        <select class="form-control" name="major_id" required>
+          <option value="">-- Pilih Jurusan --</option>
+          <% majors.forEach(function(m){ %>
+            <option value="<%= m.id %>" <%= applicant && applicant.major_id == m.id ? 'selected' : '' %>><%= m.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input class="form-control" name="full_name" value="<%= applicant ? applicant.full_name : '' %>" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tempat Lahir</label>
+          <input class="form-control" name="place_of_birth" value="<%= applicant ? applicant.place_of_birth : '' %>">
+        </div>
+        <div class="form-group">
+          <label>Tanggal Lahir</label>
+          <input class="form-control" type="date" name="date_of_birth" value="<%= applicant ? applicant.date_of_birth : '' %>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Jenis Kelamin</label>
+        <select class="form-control" name="gender">
+          <option value="">-- Pilih --</option>
+          <option value="male" <%= applicant && applicant.gender === 'male' ? 'selected' : '' %>>Laki-laki</option>
+          <option value="female" <%= applicant && applicant.gender === 'female' ? 'selected' : '' %>>Perempuan</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Alamat</label>
+        <textarea class="form-control" name="address" rows="2"><%= applicant ? applicant.address : '' %></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>No. HP</label>
+          <input class="form-control" name="phone" value="<%= applicant ? applicant.phone : '' %>">
+        </div>
+        <div class="form-group">
+          <label>Sekolah Asal</label>
+          <input class="form-control" name="previous_school" value="<%= applicant ? applicant.previous_school : '' %>">
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">
+        <%= applicant ? 'Perbarui Pendaftaran' : 'Kirim Pendaftaran' %>
+      </button>
+    </form>
+  </div>
+</div>
+<%- include('partials/footer') %>

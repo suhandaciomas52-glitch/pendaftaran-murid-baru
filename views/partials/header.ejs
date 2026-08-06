@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title ? title + ' - EduEnroll' : 'EduEnroll PPDB' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="brand">Edu<span>Enroll</span></a>
+    <div class="nav-links">
+      <% if (user) { %>
+        <% if (user.role === 'super_admin' || user.role === 'admin_school') { %>
+          <a class="<%= activePage === 'admin' ? 'active' : '' %>" href="/admin">Dashboard</a>
+        <% } else { %>
+          <a class="<%= activePage === 'student' ? 'active' : '' %>" href="/dashboard">Dashboard</a>
+        <% } %>
+        <a href="/announcements">Pengumuman</a>
+        <span class="badge-pill green"><%= user.name %></span>
+        <a href="/logout"><span class="badge-pill">Keluar</span></a>
+      <% } else { %>
+        <a class="<%= activePage === 'home' ? 'active' : '' %>" href="/">Beranda</a>
+        <a class="<%= activePage === 'ann' ? 'active' : '' %>" href="/announcements">Pengumuman</a>
+        <a href="/register">Daftar Akun</a>
+        <a href="/login"><span class="badge-pill">Masuk</span></a>
+      <% } %>
+    </div>
+  </nav>
+  <main class="main-content">

@@ -1,0 +1,42 @@
+<%- include('partials/header', { user, activePage: 'home' }) %>
+<div class="container">
+  <section class="hero">
+    <h1>Terima Kasih Telah Bergabung</h1>
+    <p>Selamat di EduEnroll — platform Pendaftaran Peserta Didik Baru (PPDB) untuk Yayasan Pendidikan SMK secara online.</p>
+    <% if (user) { %>
+      <a href="/dashboard" class="btn btn-outline">Ke Dashboard</a>
+    <% } else { %>
+      <a href="/register" class="btn btn-outline">Daftar Sekarang</a>
+    <% } %>
+  </section>
+
+  <section class="grid grid-3">
+    <div class="card stat">
+      <div class="num"><%= stats.schools %></div>
+      <div class="label">Sekolah</div>
+    </div>
+    <div class="card stat">
+      <div class="num"><%= stats.majors %></div>
+      <div class="label">Jurusan</div>
+    </div>
+    <div class="card stat">
+      <div class="num"><%= stats.applicants %></div>
+      <div class="label">Pendaftar</div>
+    </div>
+  </section>
+
+  <section class="mt-4">
+    <h2 class="mb">Pengumuman Terbaru</h2>
+    <% if (announcements.length) { %>
+      <% announcements.slice(0,3).forEach(function(a){ %>
+        <div class="list-item">
+          <h3><%= a.title %></h3>
+          <p class="muted"><%= a.content %></p>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="alert alert-info">Belum ada pengumuman.</div>
+    <% } %>
+  </section>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,69 @@
+<%- include('partials/header', { user, activePage: 'admin' }) %>
+<div class="container">
+  <div class="flex between mb">
+    <h1>Dashboard <%= user.role === 'super_admin' ? 'Super Admin' : 'Admin Sekolah' %></h1>
+  </div>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <section class="grid grid-4 mb">
+    <div class="card stat"><div class="num"><%= stats.applicants %></div><div class="label">Pendaftar</div></div>
+    <div class="card stat"><div class="num"><%= stats.pending %></div><div class="label">Menunggu</div></div>
+    <div class="card stat"><div class="num"><%= stats.payments %></div><div class="label">Pembayaran</div></div>
+    <div class="card stat"><div class="num"><%= stats.announcements %></div><div class="label">Pengumuman</div></div>
+  </section>
+
+  <% if (user.role === 'super_admin') { %>
+    <div class="grid grid-2 mb">
+      <div class="card">
+        <h3>Sekolah</h3>
+        <p class="muted mt"><%= schools.length %> sekolah terdaftar</p>
+        <a href="/admin/schools" class="btn btn-primary mt">Kelola Sekolah</a>
+      </div>
+      <div class="card">
+        <h3>Pengumuman</h3>
+        <p class="muted mt">Kelola pengumuman PPDB</p>
+        <a href="/admin/announcements" class="btn btn-primary mt">Kelola Pengumuman</a>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="grid grid-2 mb">
+      <div class="card">
+        <h3>Jurusan</h3>
+        <p class="muted mt">Kelola jurusan sekolah Anda</p>
+        <a href="/admin/majors" class="btn btn-primary mt">Kelola Jurusan</a>
+      </div>
+      <div class="card">
+        <h3>Pengumuman</h3>
+        <p class="muted mt">Buat pengumuman untuk sekolah</p>
+        <a href="/admin/announcements" class="btn btn-primary mt">Kelola Pengumuman</a>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="card">
+    <div class="flex between mb">
+      <h3>Daftar Pendaftar</h3>
+      <a href="/admin/applicants" class="btn btn-primary">Lihat Semua</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>No. Registrasi</th><th>Nama</th><th>Jurusan</th><th>Status</th><th>Tanggal</th></tr>
+        </thead>
+        <tbody>
+          <% applicants.slice(0,8).forEach(function(a){ %>
+            <tr>
+              <td><%= a.registration_number || a.id %></td>
+              <td><%= a.full_name %></td>
+              <td><%= a.major_name || '-' %></td>
+              <td><span class="badge badge-<%= a.status %>"><%= a.status %></span></td>
+              <td><%= a.created_at %></td>
+            </tr>
+          <% }) %>
+          <% if (!applicants.length) { %><tr><td colspan="5" class="muted">Belum ada pendaftar.</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

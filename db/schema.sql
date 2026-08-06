@@ -1,0 +1,90 @@
+-- EduEnroll - PPDB SaaS Schema
+CREATE DATABASE IF NOT EXISTS eduenroll CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE eduenroll;
+
+CREATE TABLE IF NOT EXISTS schools (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  npsn VARCHAR(20) NULL,
+  address VARCHAR(255) NULL,
+  phone VARCHAR(30) NULL,
+  email VARCHAR(150) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  school_id INT NULL,
+  name VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('super_admin','admin_school','candidate_student') NOT NULL DEFAULT 'candidate_student',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_users_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS majors (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  school_id INT NOT NULL,
+  code VARCHAR(20) NULL,
+  name VARCHAR(150) NOT NULL,
+  quota INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_majors_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS applicants (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  school_id INT NOT NULL,
+  major_id INT NOT NULL,
+  registration_number VARCHAR(30) NULL UNIQUE,
+  full_name VARCHAR(150) NOT NULL,
+  place_of_birth VARCHAR(100) NULL,
+  date_of_birth DATE NULL,
+  gender ENUM('male','female') NULL,
+  address VARCHAR(255) NULL,
+  phone VARCHAR(30) NULL,
+  email VARCHAR(150) NULL,
+  previous_school VARCHAR(150) NULL,
+  status ENUM('pending','verified','rejected','accepted') NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_applicants_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_applicants_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE,
+  CONSTRAINT fk_applicants_major FOREIGN KEY (major_id) REFERENCES majors(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS documents (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  applicant_id INT NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  file_path VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_docs_applicant FOREIGN KEY (applicant_id) REFERENCES applicants(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS payments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  applicant_id INT NOT NULL,
+  amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+  proof_path VARCHAR(255) NOT NULL,
+  status ENUM('pending','verified','rejected') NOT NULL DEFAULT 'pending',
+  verified_by INT NULL,
+  verified_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_payments_applicant FOREIGN KEY (applicant_id) REFERENCES applicants(id) ON DELETE CASCADE,
+  CONSTRAINT fk_payments_verifier FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS announcements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  school_id INT NULL,
+  title VARCHAR(150) NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_ann_school FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE
+);

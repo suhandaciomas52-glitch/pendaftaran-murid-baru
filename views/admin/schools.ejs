@@ -1,0 +1,33 @@
+<%- include('partials/header', { user, activePage: 'admin' }) %>
+<div class="container">
+  <h1 class="mb">Kelola Sekolah</h1>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Tambah Sekolah</h3>
+      <form method="POST" action="/admin/schools">
+        <div class="form-group"><label>Nama</label><input class="form-control" name="name" required></div>
+        <div class="form-group"><label>NPSN</label><input class="form-control" name="npsn"></div>
+        <div class="form-group"><label>Alamat</label><input class="form-control" name="address"></div>
+        <div class="form-group"><label>Telepon</label><input class="form-control" name="phone"></div>
+        <button class="btn btn-primary" type="submit">Tambah</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Daftar Sekolah</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nama</th><th>NPSN</th><th>HP</th></tr></thead>
+          <tbody>
+            <% schools.forEach(function(s){ %>
+              <tr><td><%= s.name %></td><td><%= s.npsn || '-' %></td><td><%= s.phone || '-' %></td></tr>
+            <% }) %>
+            <% if (!schools.length) { %><tr><td colspan="3" class="muted">Belum ada sekolah.</td></tr><% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

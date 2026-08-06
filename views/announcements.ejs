@@ -1,0 +1,16 @@
+<%- include('partials/header', { user, activePage: 'ann' }) %>
+<div class="container">
+  <h1 class="mb">Pengumuman PPDB</h1>
+  <% if (announcements.length) { %>
+    <% announcements.forEach(function(a){ %>
+      <div class="list-item">
+        <h3><%= a.title %></h3>
+        <span class="muted"><%= a.created_at %></span>
+        <p class="mt"><%= a.content %></p>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <div class="alert alert-info">Belum ada pengumuman.</div>
+  <% } %>
+</div>
+<%- include('partials/footer') %>

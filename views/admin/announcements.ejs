@@ -1,0 +1,33 @@
+<%- include('partials/header', { user, activePage: 'admin' }) %>
+<div class="container">
+  <h1 class="mb">Kelola Pengumuman</h1>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Buat Pengumuman</h3>
+      <form method="POST" action="/admin/announcements">
+        <div class="form-group"><label>Judul</label><input class="form-control" name="title" required></div>
+        <div class="form-group"><label>Isi</label><textarea class="form-control" name="content" rows="4" required></textarea></div>
+        <button class="btn btn-primary" type="submit">Publikasikan</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Daftar Pengumuman</h3>
+      <% announcements.forEach(function(a){ %>
+        <div class="list-item">
+          <div class="flex between">
+            <strong><%= a.title %></strong>
+            <span class="muted"><%= a.created_at %></span>
+          </div>
+          <p class="muted mt"><%= a.content %></p>
+          <form method="POST" action="/admin/announcements/<%= a.id %>/delete" onsubmit="return confirm('Hapus pengumuman ini?')">
+            <button class="btn" style="background:var(--danger);color:#fff;padding:6px 12px;">Hapus</button>
+          </form>
+        </div>
+      <% }) %>
+      <% if (!announcements.length) { %><p class="muted">Belum ada pengumuman.</p><% } %>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

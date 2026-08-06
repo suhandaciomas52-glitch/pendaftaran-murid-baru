@@ -1,0 +1,41 @@
+<%- include('partials/header', { user, activePage: 'admin' }) %>
+<div class="container">
+  <h1 class="mb">Kelola Jurusan</h1>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Tambah Jurusan</h3>
+      <form method="POST" action="/admin/majors">
+        <div class="form-group">
+          <label>Sekolah</label>
+          <select class="form-control" name="school_id" required>
+            <option value="">-- Pilih --</option>
+            <% schools.forEach(function(s){ %>
+              <option value="<%= s.id %>" <%= user.school_id == s.id ? 'selected' : '' %>><%= s.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group"><label>Kode</label><input class="form-control" name="code"></div>
+        <div class="form-group"><label>Nama</label><input class="form-control" name="name" required></div>
+        <div class="form-group"><label>Kuota</label><input class="form-control" type="number" name="quota" min="0"></div>
+        <button class="btn btn-primary" type="submit">Tambah</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Daftar Jurusan</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kode</th><th>Nama</th><th>Kuota</th></tr></thead>
+          <tbody>
+            <% majors.forEach(function(m){ %>
+              <tr><td><%= m.code || '-' %></td><td><%= m.name %></td><td><%= m.quota %></td></tr>
+            <% }) %>
+            <% if (!majors.length) { %><tr><td colspan="3" class="muted">Belum ada jurusan.</td></tr><% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

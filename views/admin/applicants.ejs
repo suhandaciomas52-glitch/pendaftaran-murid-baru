@@ -1,0 +1,35 @@
+<%- include('partials/header', { user, activePage: 'admin' }) %>
+<div class="container">
+  <div class="flex between mb">
+    <h1>Daftar Pendaftar</h1>
+    <div class="flex">
+      <% ['all','pending','verified','accepted','rejected'].forEach(function(s){ %>
+        <a href="/admin/applicants?status=<%= s %>" class="btn <%= (statusFilter || 'all') === s ? 'btn-primary' : 'btn' %>" style="padding:8px 14px;border:1px solid var(--border);"><%= s %></a>
+      <% }) %>
+    </div>
+  </div>
+  <%- include('partials/alerts', { message, error }) %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Reg</th><th>Nama</th><th>Jurusan</th><th>Status</th><th>Tanggal</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% applicants.forEach(function(a){ %>
+            <tr>
+              <td><%= a.registration_number || a.id %></td>
+              <td><%= a.full_name %></td>
+              <td><%= a.major_name || '-' %></td>
+              <td><span class="badge badge-<%= a.status %>"><%= a.status %></span></td>
+              <td><%= a.created_at %></td>
+              <td><a href="/admin/applicants/<%= a.id %>">Detail</a></td>
+            </tr>
+          <% }) %>
+          <% if (!applicants.length) { %><tr><td colspan="6" class="muted">Tidak ada pendaftar.</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,58 @@
+<%- include('partials/header', { user, activePage: 'student' }) %>
+<div class="container">
+  <h1 class="mb">Dokumen Pendaftaran</h1>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <% if (!applicant) { %>
+    <div class="alert alert-info">Anda belum membuat pendaftaran. <a href="/dashboard/apply">Isi formulir dulu</a>.</div>
+  <% } else { %>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Upload Dokumen Baru</h3>
+        <form method="POST" action="/dashboard/documents" enctype="multipart/form-data">
+          <div class="form-group">
+            <label>Jenis Dokumen</label>
+            <select class="form-control" name="type" required>
+              <option value="">-- Pilih --</option>
+              <option value="ijazah">Ijazah</option>
+              <option value="akte">Akte Kelahiran</option>
+              <option value="kk">Kartu Keluarga</option>
+              <option value="foto">Pas Foto</option>
+              <option value="lainnya">Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>File (PDF/JPG/PNG, maks 5MB)</label>
+            <input class="form-control" type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required>
+          </div>
+          <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Dokumen Terunggah</h3>
+        <% if (documents.length) { %>
+          <ul class="file-list">
+            <% documents.forEach(function(d){ %>
+              <li>
+                <div>
+                  <strong><%= d.type %></strong><br>
+                  <span class="muted"><%= d.created_at %></span>
+                </div>
+                <div class="flex">
+                  <a href="<%= d.file_path %>" target="_blank">Lihat</a>
+                  <form method="POST" action="/dashboard/documents/<%= d.id %>/delete" onsubmit="return confirm('Hapus dokumen ini?')">
+                    <button class="btn" style="background:var(--danger);color:#fff;padding:6px 12px;">Hapus</button>
+                  </form>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="muted">Belum ada dokumen.</p>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+</div>
+<%- include('partials/footer') %>

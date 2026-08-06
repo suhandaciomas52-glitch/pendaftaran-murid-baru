@@ -1,0 +1,80 @@
+<%- include('partials/header', { user, activePage: 'admin' }) %>
+<div class="container">
+  <a href="/admin/applicants">&larr; Kembali</a>
+  <h1 class="mb mt">Detail Pendaftar</h1>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Data Pendaftar</h3>
+      <div class="mt">
+        <p><strong>No. Registrasi:</strong> <%= applicant.registration_number || '-' %></p>
+        <p><strong>Nama:</strong> <%= applicant.full_name %></p>
+        <p><strong>Tempat, Tgl Lahir:</strong> <%= applicant.place_of_birth || '-' %>, <%= applicant.date_of_birth || '-' %></p>
+        <p><strong>Jenis Kelamin:</strong> <%= applicant.gender || '-' %></p>
+        <p><strong>Alamat:</strong> <%= applicant.address || '-' %></p>
+        <p><strong>HP:</strong> <%= applicant.phone || '-' %></p>
+        <p><strong>Sekolah Asal:</strong> <%= applicant.previous_school || '-' %></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Status</h3>
+      <p class="mt"><span class="badge badge-<%= applicant.status %>"><%= applicant.status %></span></p>
+      <form method="POST" action="/admin/applicants/<%= applicant.id %>/status" class="flex mt">
+        <select class="form-control" name="status">
+          <% ['pending','verified','accepted','rejected'].forEach(function(s){ %>
+            <option value="<%= s %>" <%= applicant.status === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+        <button class="btn btn-primary" type="submit">Simpan</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt">
+    <h3>Dokumen</h3>
+    <% if (documents.length) { %>
+      <ul class="file-list">
+        <% documents.forEach(function(d){ %>
+          <li>
+            <span><strong><%= d.type %></strong> &middot; <span class="muted"><%= d.created_at %></span></span>
+            <a href="<%= d.file_path %>" target="_blank">Lihat</a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="muted mt">Belum ada dokumen.</p>
+    <% } %>
+  </div>
+
+  <div class="card mt">
+    <h3>Pembayaran</h3>
+    <% if (payments.length) { %>
+      <ul class="file-list">
+        <% payments.forEach(function(p){ %>
+          <li>
+            <span>
+              <strong>Rp <%= Number(p.amount).toLocaleString('id-ID') %></strong>
+              <span class="badge badge-<%= p.status %>"><%= p.status %></span>
+            </span>
+            <div class="flex">
+              <a href="<%= p.proof_path %>" target="_blank">Lihat</a>
+              <form method="POST" action="/admin/payments/<%= p.id %>/verify">
+                <select class="form-control" name="status" style="padding:6px;">
+                  <option value="verified" <%= p.status === 'verified' ? 'selected' : '' %>>verified</option>
+                  <option value="rejected" <%= p.status === 'rejected' ? 'selected' : '' %>>rejected</option>
+                  <option value="pending" <%= p.status === 'pending' ? 'selected' : '' %>>pending</option>
+                </select>
+                <button class="btn btn-success" style="padding:6px 12px;">Simpan</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="muted mt">Belum ada pembayaran.</p>
+    <% } %>
+  </div>
+</div>
+<%- include('partials/footer') %>

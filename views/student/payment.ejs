@@ -1,0 +1,48 @@
+<%- include('partials/header', { user, activePage: 'student' }) %>
+<div class="container">
+  <h1 class="mb">Pembayaran</h1>
+  <%- include('partials/alerts', { message, error }) %>
+
+  <% if (!applicant) { %>
+    <div class="alert alert-info">Anda belum membuat pendaftaran. <a href="/dashboard/apply">Isi formulir dulu</a>.</div>
+  <% } else { %>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Upload Bukti Pembayaran</h3>
+        <p class="muted">Pembayaran dilakukan ke rekening sekolah. Unggah bukti transfer di sini.</p>
+        <form method="POST" action="/dashboard/payment" enctype="multipart/form-data">
+          <div class="form-group">
+            <label>Nominal (Rp)</label>
+            <input class="form-control" type="number" name="amount" min="0" placeholder="mis. 1000000" required>
+          </div>
+          <div class="form-group">
+            <label>File Bukti (PDF/JPG/PNG)</label>
+            <input class="form-control" type="file" name="proof" accept=".pdf,.jpg,.jpeg,.png" required>
+          </div>
+          <button class="btn btn-success" type="submit">Upload Bukti</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Riwayat Pembayaran</h3>
+        <% if (payments.length) { %>
+          <ul class="file-list">
+            <% payments.forEach(function(p){ %>
+              <li>
+                <div>
+                  <strong>Rp <%= Number(p.amount).toLocaleString('id-ID') %></strong><br>
+                  <span class="badge badge-<%= p.status %>"><%= p.status %></span>
+                  <span class="muted"><%= p.created_at %></span>
+                </div>
+                <a href="<%= p.proof_path %>" target="_blank">Lihat</a>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="muted">Belum ada pembayaran.</p>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+</div>
+<%- include('partials/footer') %>
