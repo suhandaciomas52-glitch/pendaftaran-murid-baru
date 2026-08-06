@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title ? title + ' - EduEnroll' : 'EduEnroll PPDB' %></title>
+  <title><%= typeof title !== 'undefined' && title ? title + ' - EduEnroll' : 'EduEnroll PPDB' %></title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <nav class="navbar">
     <a href="/" class="brand">Edu<span>Enroll</span></a>
-    <div class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
       <% if (user) { %>
         <% if (user.role === 'super_admin' || user.role === 'admin_school') { %>
           <a class="<%= activePage === 'admin' ? 'active' : '' %>" href="/admin">Dashboard</a>
@@ -27,4 +30,9 @@
       <% } %>
     </div>
   </nav>
+  <script>
+    document.getElementById('navToggle').addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
   <main class="main-content">

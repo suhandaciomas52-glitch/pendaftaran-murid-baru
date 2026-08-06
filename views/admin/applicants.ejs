@@ -1,14 +1,14 @@
-<%- include('partials/header', { user, activePage: 'admin' }) %>
+﻿<%- include('../partials/header', { user, activePage: 'admin' }) %>
 <div class="container">
   <div class="flex between mb">
     <h1>Daftar Pendaftar</h1>
-    <div class="flex">
+    <div class="filter-bar">
       <% ['all','pending','verified','accepted','rejected'].forEach(function(s){ %>
         <a href="/admin/applicants?status=<%= s %>" class="btn <%= (statusFilter || 'all') === s ? 'btn-primary' : 'btn' %>" style="padding:8px 14px;border:1px solid var(--border);"><%= s %></a>
       <% }) %>
     </div>
   </div>
-  <%- include('partials/alerts', { message, error }) %>
+  <%- include('../partials/alerts', { message, error }) %>
   <div class="card">
     <div class="table-wrap">
       <table>
@@ -32,4 +32,4 @@
     </div>
   </div>
 </div>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

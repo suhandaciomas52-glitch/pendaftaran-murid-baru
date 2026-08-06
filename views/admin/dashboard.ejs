@@ -1,9 +1,9 @@
-<%- include('partials/header', { user, activePage: 'admin' }) %>
+﻿<%- include('../partials/header', { user, activePage: 'admin' }) %>
 <div class="container">
   <div class="flex between mb">
     <h1>Dashboard <%= user.role === 'super_admin' ? 'Super Admin' : 'Admin Sekolah' %></h1>
   </div>
-  <%- include('partials/alerts', { message, error }) %>
+  <%- include('../partials/alerts', { message, error }) %>
 
   <section class="grid grid-4 mb">
     <div class="card stat"><div class="num"><%= stats.applicants %></div><div class="label">Pendaftar</div></div>
@@ -66,4 +66,4 @@
     </div>
   </div>
 </div>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

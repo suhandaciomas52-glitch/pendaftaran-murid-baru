@@ -35,7 +35,7 @@ function requireRole(...roles) {
   return (req, res, next) => {
     const user = getAuthUser(req);
     if (!user) return res.redirect('/login');
-    if (!roles.includes(user.role)) return res.status(403).render('error', { status: 403, message: 'Akses ditolak.' });
+    if (!roles.includes(user.role)) return res.status(403).render('error', { status: 403, message: 'Akses ditolak.', user });
     req.user = user;
     next();
   };

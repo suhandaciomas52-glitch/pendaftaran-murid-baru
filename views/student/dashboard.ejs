@@ -1,10 +1,10 @@
-<%- include('partials/header', { user, activePage: 'student' }) %>
+﻿<%- include('../partials/header', { user, activePage: 'student' }) %>
 <div class="container">
   <div class="flex between mb">
     <h1>Dashboard Calon Siswa</h1>
     <span class="muted"><%= user.email %></span>
   </div>
-  <%- include('partials/alerts', { message, error }) %>
+  <%- include('../partials/alerts', { message, error }) %>
 
   <% if (!applicant) { %>
     <div class="card">
@@ -39,4 +39,4 @@
     </div>
   <% } %>
 </div>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

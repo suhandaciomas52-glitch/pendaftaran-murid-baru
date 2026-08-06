@@ -1,13 +1,14 @@
 # EduEnroll - PPDB SaaS untuk Yayasan Pendidikan SMK
 
-Backend REST API untuk mengelola Pendaftaran Peserta Didik Baru (PPDB) berbasis SaaS.
+Website + Backend REST API untuk mengelola Pendaftaran Peserta Didik Baru (PPDB) berbasis SaaS.
 
 ## Fitur MVP
 - Autentikasi & otorisasi (JWT + bcrypt) dengan 3 peran: **Super Admin, Admin Sekolah, Calon Siswa**
+- Halaman web (EJS): landing, pengumuman, login, register, dashboard siswa, formulir pendaftaran, upload dokumen, upload bukti pembayaran, dashboard admin & super admin, verifikasi
+- Cetak bukti pendaftaran PDF (pdfkit)
 - CRUD: Users, Schools, Majors, Applicants, Documents, Payments, Announcements
 - Upload dokumen dan bukti pembayaran (multer) tanpa payment gateway
-- Verifikasi dokumen & pembayaran
-- Responsive-ready via REST API
+- Responsive, validasi input, error handling
 
 ## Tech Stack
 Node.js, Express, MySQL (mysql2), JWT, bcryptjs, Multer, dotenv, CORS.
@@ -37,7 +38,27 @@ npm start
 # atau
 npm run dev
 ```
-Server berjalan di `http://localhost:3000`. API berada di prefix `/api/v1`.
+Website berjalan di `http://localhost:4000`. API berada di `http://localhost:4000/api/v1`.
+
+## Akun Demo
+| Peran | Email | Password |
+|---|---|---|
+| Super Admin | `super@eduenroll.test` | `secret123` |
+| Admin Sekolah | `admin@smkn1.test` | `Admin12345` |
+| Calon Siswa | `budi@mail.test` | `secret123` |
+
+## Halaman Web
+- `/` landing page + statistik
+- `/announcements` pengumuman publik
+- `/login`, `/register` autentikasi
+- `/dashboard` dashboard calon siswa (form pendaftaran, dokumen, pembayaran, bukti PDF)
+- `/admin` dashboard admin/super admin (verifikasi pendaftar & pembayaran, kelola sekolah/jurusan/pengumuman)
+
+## Testing
+```bash
+npm test
+```
+Menjalankan 18 test otomatis (jest + supertest) terhadap database `eduenroll_test` yang di-reset setiap run.
 
 ## Endpoint Utama
 

@@ -1,10 +1,10 @@
-<%- include('partials/header', { user: null, activePage: '' }) %>
+﻿<%- include('../partials/header', { user: null, activePage: '' }) %>
 <div class="container auth-wrap">
   <div class="auth-logo">
     <h1>EduEnroll</h1>
     <p>Masuk ke akun PPDB Anda</p>
   </div>
-  <%- include('partials/alerts', { message, error }) %>
+  <%- include('../partials/alerts', { message, error }) %>
   <div class="card">
     <form method="POST" action="/login">
       <input type="hidden" name="next" value="<%= next %>">
@@ -21,4 +21,4 @@
   </div>
   <p class="text-center muted mt">Belum punya akun? <a href="/register">Daftar di sini</a></p>
 </div>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

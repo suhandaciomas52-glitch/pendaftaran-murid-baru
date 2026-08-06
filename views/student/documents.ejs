@@ -1,7 +1,7 @@
-<%- include('partials/header', { user, activePage: 'student' }) %>
+﻿<%- include('../partials/header', { user, activePage: 'student' }) %>
 <div class="container">
   <h1 class="mb">Dokumen Pendaftaran</h1>
-  <%- include('partials/alerts', { message, error }) %>
+  <%- include('../partials/alerts', { message, error }) %>
 
   <% if (!applicant) { %>
     <div class="alert alert-info">Anda belum membuat pendaftaran. <a href="/dashboard/apply">Isi formulir dulu</a>.</div>
@@ -55,4 +55,4 @@
     </div>
   <% } %>
 </div>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

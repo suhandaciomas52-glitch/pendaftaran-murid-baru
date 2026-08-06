@@ -1,7 +1,7 @@
-<%- include('partials/header', { user, activePage: 'student' }) %>
+﻿<%- include('../partials/header', { user, activePage: 'student' }) %>
 <div class="container">
   <h1 class="mb">Formulir Pendaftaran</h1>
-  <%- include('partials/alerts', { message, error }) %>
+  <%- include('../partials/alerts', { message, error }) %>
   <div class="card">
     <form method="POST" action="/dashboard/apply">
       <div class="form-group">
@@ -64,4 +64,4 @@
     </form>
   </div>
 </div>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>
